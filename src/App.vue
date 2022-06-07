@@ -1,32 +1,41 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+    <PostForm />
+    <h1>{{ postsCount }}</h1>
+    <div class="post" v-for="post in validPosts" :key="post.id">
+      <h2>{{ post.title }}</h2>
+      <p>{{ post.body }}</p>
     </div>
-    <router-view/>
   </div>
 </template>
 
+<script>
+import { mapGetters, mapActions } from "vuex";
+import PostForm from "./components/PostForm";
+export default {
+  name: "app",
+  computed: mapGetters(["validPosts", "postsCount"]),
+  methods: mapActions(["fetchPosts"]),
+  components: { PostForm },
+  async mounted() {
+    this.fetchPosts();
+  },
+};
+</script>
 <style lang="scss">
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Arial", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: black;
+  margin: 60px auto;
+  width: 400px;
 }
-
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+.post {
+  border: 1px solid #ccc;
+  border-radius: 25px;
+  margin-bottom: 1rem;
+  padding: 10px;
 }
 </style>
